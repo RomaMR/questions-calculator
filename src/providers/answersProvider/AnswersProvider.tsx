@@ -1,4 +1,4 @@
-import React, {createContext, useCallback, useEffect, useState} from 'react';
+import React, {createContext, useCallback, useEffect, useMemo, useState} from 'react';
 import {Answer} from "../../types";
 
 export interface IAnswersContext {
@@ -15,21 +15,20 @@ interface NotificationsProviderProps {
 
 export default function AnswersProvider({ children }: NotificationsProviderProps) {
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [latestAnswer, setLatestAnswer] = useState<Answer | null>(null);
 
   useEffect(() => {
     setAnswers(JSON.parse(localStorage.getItem('answers') || '[]'));
   }, []);
-
-  useEffect(() => {
-    setLatestAnswer(answers[answers.length - 1]);
-  }, [answers]);
 
   const submitAnswer = useCallback((data: Answer) => {
     const updatedAnswers = [...answers, data];
     localStorage.setItem('answers', JSON.stringify(updatedAnswers));
     setAnswers(updatedAnswers);
   }, [answers]);
+
+  const latestAnswer: Answer | null = useMemo(() => {
+    return answers[answers.length - 1]
+  }, [answers])
 
   return (
     <AnswersContext.Provider

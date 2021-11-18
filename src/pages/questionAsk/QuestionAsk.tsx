@@ -8,6 +8,7 @@ import Page from "../../components/page/Page";
 import Input from "../../components/input/Input";
 import styles from './QuestionAsk.module.scss';
 import useAnswersContext from "../../hooks/useAnswersContext/useAnswersContext";
+import ROUTES from "../../constants/routes";
 
 const QUESTION_FIELD = 'question';
 const PLACEHOLDER = 'What is ';
@@ -26,6 +27,13 @@ const useStyles = makeStyles(() =>
   })
 );
 
+const SIGNS = {
+  plus: 'plus',
+  minus: 'minus',
+}
+
+const SIGNS_VALUES = Object.values(SIGNS)
+
 function QuestionAsk() {
   const classes = useStyles();
 
@@ -34,18 +42,21 @@ function QuestionAsk() {
   const { submitAnswer } = useAnswersContext();
 
   const onSubmit = useCallback((data: any) => {
-    const [, dataQuestion = ''] = data[QUESTION_FIELD].split(PLACEHOLDER);
+    const question = data[QUESTION_FIELD]
+    const [, dataQuestion = ''] = question.split(PLACEHOLDER);
     const questionArray = dataQuestion.replace('?', '').split(' ');
-    if (!isNaN(questionArray[0]) && !isNaN(questionArray[2]) && ['plus', 'minus'].indexOf(questionArray[1]) >= 0) {
+    const [firstQ, sign, secondQ] = questionArray
+    if (!isNaN(firstQ) && !isNaN(secondQ) && SIGNS_VALUES.includes(sign)) {
+      const result = sign === SIGNS.plus ? (
+        parseFloat(firstQ) + parseFloat(secondQ)
+      ) : (
+        parseFloat(firstQ) - parseFloat(secondQ)
+      )
       submitAnswer({
-        question: data[QUESTION_FIELD],
-        result: questionArray[1] === 'plus' ? (
-          parseFloat(questionArray[0]) + parseFloat(questionArray[2])
-        ) : (
-          parseFloat(questionArray[0]) - parseFloat(questionArray[2])
-        )
+        question,
+        result
       });
-      history.push('/answer');
+      history.push(ROUTES.answer);
     }
   }, [history, submitAnswer]);
 
@@ -53,7 +64,7 @@ function QuestionAsk() {
     <Page
       title='Ask your question'
       actions={(
-        <Link to='/list'>
+        <Link to={ROUTES.list}>
           <Button color='primary' size='large' endIcon={(<UpdateOutlined />)}>
             <div className='mobile-hidden'>View your Q&A history</div>
           </Button>

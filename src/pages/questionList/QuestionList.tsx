@@ -6,6 +6,7 @@ import Page from "../../components/page/Page";
 import useAnswersContext from "../../hooks/useAnswersContext/useAnswersContext";
 import styles from './QuestionList.module.scss';
 import {Answer} from "../../types";
+import ROUTES from "../../constants/routes";
 
 function QuestionList() {
   const history = useHistory();
@@ -13,14 +14,14 @@ function QuestionList() {
   const { answers } = useAnswersContext();
 
   const onAnotherQuestion = useCallback(() => {
-    history.push('/ask')
+    history.push(ROUTES.ask)
   }, [history]);
 
   return (
     <Page
       title='Q&A history'
       actions={(
-        <Link to='/ask'>
+        <Link to={ROUTES.ask}>
           <Button color='primary' size='large' endIcon={(<HelpOutline />)}>
             <div className='mobile-hidden'>Ask your question</div>
           </Button>

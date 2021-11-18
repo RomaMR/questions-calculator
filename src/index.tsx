@@ -8,6 +8,7 @@ import QuestionAsk from "./pages/questionAsk/QuestionAsk";
 import QuestionList from "./pages/questionList/QuestionList";
 import theme from "./theme";
 import './index.css';
+import ROUTES from "./constants/routes";
 
 ReactDOM.render(
   <MuiThemeProvider theme={theme}>
@@ -15,19 +16,19 @@ ReactDOM.render(
       <CssBaseline />
       <Router>
         <Switch>
-          <Route exact path="/">
+          <Route exact path={ROUTES.index}>
             <QuestionAsk />
           </Route>
-          <Route exact path="/ask">
+          <Route exact path={ROUTES.ask}>
             <QuestionAsk />
           </Route>
-          <Route exact path="/answer">
+          <Route exact path={ROUTES.answer}>
             <QuestionAnswer />
           </Route>
-          <Route exact path="/list">
+          <Route exact path={ROUTES.list}>
             <QuestionList />
           </Route>
-          <Redirect to="/" />
+          <Redirect to={ROUTES.index} />
         </Switch>
       </Router>
     </AnswersProvider>

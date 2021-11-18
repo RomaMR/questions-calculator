@@ -5,6 +5,7 @@ import {HelpOutline, UpdateOutlined} from '@material-ui/icons';
 import Page from "../../components/page/Page";
 import useAnswersContext from "../../hooks/useAnswersContext/useAnswersContext";
 import styles from './QuestionAnswer.module.scss';
+import ROUTES from "../../constants/routes";
 
 function QuestionAnswer() {
   const history = useHistory();
@@ -12,18 +13,18 @@ function QuestionAnswer() {
   const { latestAnswer } = useAnswersContext();
 
   const onAnotherQuestion = useCallback(() => {
-    history.push('/ask')
+    history.push(ROUTES.ask)
   }, [history]);
 
   const onViewHistory = useCallback(() => {
-    history.push('/list')
+    history.push(ROUTES.list)
   }, [history]);
 
   return (
     <Page
       title='The answer'
       actions={(
-        <Link to='/list'>
+        <Link to={ROUTES.list}>
           <Button color='primary' size='large' endIcon={(<UpdateOutlined />)}>
             <div className='mobile-hidden'>View your Q&A history</div>
           </Button>
